@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Boss
+  - Barrage
+  - Enemy
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: mae
+    uniqueID: 2672381833
+    locked: 0
+  - name: naka
+    uniqueID: 1341716807
+    locked: 0
+  - name: too
+    uniqueID: 3396132283
+    locked: 0
+  - name: 1
+    uniqueID: 3321317127
+    locked: 0
+  - name: 2
+    uniqueID: 2985104681
+    locked: 0
+  - name: 3
+    uniqueID: 2899074241
+    locked: 0
+  - name: 4
+    uniqueID: 3663443133
+    locked: 0
+  - name: 5
+    uniqueID: 2688304373
+    locked: 0
+  - name: 6
+    uniqueID: 3666037665
+    locked: 0
+  - name: 7
+    uniqueID: 3618746193
+    locked: 0
+  - name: 8
+    uniqueID: 351873455
+    locked: 0
