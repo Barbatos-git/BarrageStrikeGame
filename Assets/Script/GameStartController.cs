@@ -16,12 +16,14 @@ public class GameStartController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // スペースキーが押されたらシーンを切り替える
         if (Input.GetKeyDown(KeyCode.Space))
         {
             LoadNextScene();
         }
     }
 
+    // 次のシーンを読み込む
     public void LoadNextScene()
     {
         SceneManager.LoadScene(nextSceneName);

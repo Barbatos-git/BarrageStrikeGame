@@ -37,21 +37,26 @@ public class BossExplosionController : MonoBehaviour
         
     }
 
+    // ボスのHPが0になったときに呼ばれる
     private void OnBossDeath()
     {
         if (hasDied) { return; }
         hasDied = true;
+        // 移動を停止
         if (bossController != null)
         {
             bossController.StopMovement();
         }
+        // 爆発アニメーション開始
         StartCoroutine(TriggerExplosionsSequentially());
+        // フェードアウト処理
         if (!isFading)
         {
             StartCoroutine(FadeOutAndDestroy());
         }
     }
 
+    // 爆発エフェクトを順番に発生させる
     private IEnumerator TriggerExplosionsSequentially()
     {
         Transform[] shuffledPoints = ShuffleArray(explosionPoints);
@@ -62,6 +67,7 @@ public class BossExplosionController : MonoBehaviour
         }
     }
 
+    // 爆発ポイントの順序をランダムにシャッフル
     private Transform[] ShuffleArray(Transform[] array)
     {
         Transform[] shuffledArray = (Transform[])array.Clone();
@@ -75,6 +81,7 @@ public class BossExplosionController : MonoBehaviour
         return shuffledArray;
     }
 
+    // フェードアウトしながらオブジェクトを破壊
     private IEnumerator FadeOutAndDestroy()
     {
         yield return new WaitForSeconds(2f);
@@ -90,6 +97,7 @@ public class BossExplosionController : MonoBehaviour
         }
         spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0);
         Destroy(gameObject);
+        // 親オブジェクトも削除
         Transform parent = transform.parent;
         if (parent != null)
         {
@@ -97,6 +105,7 @@ public class BossExplosionController : MonoBehaviour
         }
     }
 
+    // プレイヤーとの接触処理
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && !hasDied)

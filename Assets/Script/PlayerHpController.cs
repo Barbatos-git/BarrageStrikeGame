@@ -18,6 +18,7 @@ public class PlayerHpController : MonoBehaviour
     void Start()
     {
         currentHp = maxHp;
+        // 無敵状態イベントを受け取る設定
         InvincibleAndFlashController Invincible = FindObjectOfType<InvincibleAndFlashController>();
         if (Invincible != null)
         {
@@ -32,6 +33,7 @@ public class PlayerHpController : MonoBehaviour
         
     }
 
+    // HPに応じてハートUIを更新
     void UpdateHpBar()
     {
         for (int i = 0; i < hearts.Length; i++)
@@ -52,6 +54,7 @@ public class PlayerHpController : MonoBehaviour
         }
     }
 
+    // ダメージを受けたときの処理
     public void TakeDamage(int damage) 
     {
         if (isInvincible)
@@ -67,11 +70,13 @@ public class PlayerHpController : MonoBehaviour
         }
     }
 
+    // 無敵状態フラグON
     private void OnPlayerInvincible()
     {
         isInvincible = true;
     }
 
+    // 無敵状態フラグOFF
     private void ResetPlayerInvincible()
     {
         isInvincible = false;

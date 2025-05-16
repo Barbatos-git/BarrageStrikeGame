@@ -30,25 +30,29 @@ public class EnemyExplosionAndHpController : MonoBehaviour
         }
     }
 
+    // 死亡時の処理
     public void OnEnemyDeath()
     {
         if (hasDied) return;
         hasDied = true;
-
+        // 爆発生成
         if (explosionPrefab != null)
         {
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
+        // 移動停止
         if (enemyController != null)
         {
             enemyController.StopMovement();
         }
+        // フェードアウト開始
         if (!isFading)
         {
             StartCoroutine(FadeOutAndDestroy());
         }
     }
 
+    // 徐々に透明にしてオブジェクトを削除
     private IEnumerator FadeOutAndDestroy()
     {
         yield return new WaitForSeconds(1f);
@@ -66,6 +70,7 @@ public class EnemyExplosionAndHpController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // プレイヤーとの物理衝突時にダメージ処理
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && !hasDied)
@@ -79,6 +84,7 @@ public class EnemyExplosionAndHpController : MonoBehaviour
         }
     }
 
+    // 外部からダメージを与える
     public void TakeDamage(float damage)
     {
         if (hasDied)
@@ -93,6 +99,7 @@ public class EnemyExplosionAndHpController : MonoBehaviour
         }
     }
 
+    // 初期化処理（生成時呼び出し）
     public void Initialize()
     {
         currentHp = maxHp;

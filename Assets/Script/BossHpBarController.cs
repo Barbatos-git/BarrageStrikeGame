@@ -25,20 +25,24 @@ public class BossHpBarController : MonoBehaviour
         
     }
 
+    // HPバーの見た目を更新
     void UpdateHpBar()
     {
         if (hpBarFill != null)
         {
+            // HPの割合に応じてFillのサイズを変更
             hpBarFill.fillAmount = currentHp / maxHp;
         }
     }
 
+    // ダメージを受けたときの処理
     public void TakeDamage(float damage)
     {
         currentHp -= damage;
-        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp); // 範囲制限
         //Debug.Log(currentHp);
         UpdateHpBar();
+        // HPが0になったらイベント発火
         if (currentHp <= 0f)
         {
             onHpZero?.Invoke();

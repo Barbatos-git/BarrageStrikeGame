@@ -16,6 +16,7 @@ public class ExplosionController : MonoBehaviour
         
     }
 
+    // エフェクトが終了したら自分自身を削除するための関数
     public void DestroySelf()
     {
         Destroy(gameObject);

@@ -30,14 +30,17 @@ public class PlayerShotController : MonoBehaviour
         }
     }
 
+    // 弾が画面外にあるかどうかのチェック
     private bool IsOutOfScreen()
     {
         Vector3 screenPoint = mainCamera.WorldToViewportPoint(transform.position);
         return screenPoint.x < 0 || screenPoint.x > 1 || screenPoint.y < 0 || screenPoint.y > 1;
     }
 
+    // 衝突判定
     void OnTriggerEnter2D(Collider2D collision)
     {
+        // ボスに命中
         if (collision.gameObject.CompareTag("Boss"))
         {
             if (Time.time - lastExplosionTime >= explosionCooldown)
@@ -52,7 +55,7 @@ public class PlayerShotController : MonoBehaviour
             }
             Destroy(gameObject);
         }
-
+        // 敵に命中
         if (collision.gameObject.CompareTag("Enemy"))
         {
             enemyHp = collision.GetComponent<EnemyExplosionAndHpController>();
@@ -69,6 +72,7 @@ public class PlayerShotController : MonoBehaviour
         }
     }
 
+    // 爆発エフェクトを生成
     void SpawnExplosion()
     {
         if (explosionPrefab != null)

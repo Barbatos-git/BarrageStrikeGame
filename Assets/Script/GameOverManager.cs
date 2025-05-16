@@ -29,16 +29,19 @@ public class GameOverManager : MonoBehaviour
     {
         if (isGameOverTriggered)
         {
+            // 黒幕を徐々にフェードイン
             if (fadeAlpha < 225f/255f)
             {
                 fadeAlpha += Time.deltaTime / fadeDuration;
                 fadeImage.color = new Color(0f, 0f, 0f, Mathf.Clamp01(fadeAlpha));
             }
+            // 黒幕がある程度濃くなったら、「Game Over」画像をフェードイン
             if (fadeAlpha >= 225f/255f && gameOverAlpha < 1f)
             {
                 gameOverAlpha += Time.deltaTime / fadeDuration;
                 gameOverImage.color = new Color(1f, 1f, 1f, Mathf.Clamp01(gameOverAlpha));
             }
+            // 両方表示されたら遷移
             if (gameOverAlpha >= 1f)
             {
                 Invoke("TransitionToNextScene", waitTimeBeforeTransition);
@@ -47,6 +50,7 @@ public class GameOverManager : MonoBehaviour
         }
     }
 
+    // ゲームオーバー演出を開始する
     public void TriggerGameOver()
     {
         if (!isGameOverTriggered)
@@ -57,6 +61,7 @@ public class GameOverManager : MonoBehaviour
         }
     }
 
+    // 次のシーンに遷移
     void TransitionToNextScene()
     {
         SceneManager.LoadScene(nextSceneName);

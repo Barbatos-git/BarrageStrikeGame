@@ -48,12 +48,14 @@ public class BossBulletController : MonoBehaviour
 
     }
 
+    // 弾幕開始までの遅延
     IEnumerator DelayStartBarrage()
     {
         yield return new WaitForSeconds(5f);
         StartNewBarrageCycle();
     }
 
+    // 弾幕サイクルの開始（ランダムにパターン選択）
     void StartNewBarrageCycle()
     {
         barrageSequence.Clear();
@@ -64,6 +66,7 @@ public class BossBulletController : MonoBehaviour
         StartCoroutine(StartRandomBarrage());
     }
 
+    // ランダムな弾幕パターンを順に実行
     IEnumerator StartRandomBarrage()
     {
         while (barrageSequence.Count > 0)
@@ -78,6 +81,7 @@ public class BossBulletController : MonoBehaviour
         StartNewBarrageCycle();
     }
 
+    // 指定された弾幕タイプを実行
     IEnumerator FireBarrage(int barrageType)
     {
         DestroyActiveBullets();
@@ -113,6 +117,7 @@ public class BossBulletController : MonoBehaviour
         isFiring = false;
     }
 
+    // 現在の弾を全て破棄
     void DestroyActiveBullets()
     {
         foreach (GameObject bullet in activeBullets)
@@ -122,6 +127,7 @@ public class BossBulletController : MonoBehaviour
         activeBullets.Clear();
     }
 
+    // 扇状に弾を発射
     IEnumerator FanBullet()
     {
         int bulletCount = 8;
@@ -136,7 +142,7 @@ public class BossBulletController : MonoBehaviour
                 Vector2 direction = new Vector2(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad));
                 bullet.GetComponent<Rigidbody2D>().linearVelocity = direction.normalized * speed;
                 activeBullets.Add(bullet);
-
+                // プレイヤーへの衝突イベント登録
                 BarrageController barrage = bullet.GetComponent<BarrageController>();
                 if (barrage != null && playerInvincibleController != null)
                 {
@@ -147,6 +153,7 @@ public class BossBulletController : MonoBehaviour
         }
     }
 
+    // 下方向に直進弾を発射
     IEnumerator StraightBullet()
     {
         while (isFiring && isMovable)
@@ -167,6 +174,7 @@ public class BossBulletController : MonoBehaviour
         }
     }
 
+    // 渦巻き状に弾を発射
     IEnumerator SpiralBullet()
     {
         float angle = 0f;
@@ -194,6 +202,7 @@ public class BossBulletController : MonoBehaviour
         }
     }
 
+    // プレイヤーを追尾する弾
     IEnumerator TrackingBullet()
     {
         while (isFiring && isMovable)
@@ -222,6 +231,7 @@ public class BossBulletController : MonoBehaviour
         }
     }
 
+    // ジグザグに動く弾
     IEnumerator ZigZagBullet()
     {
         float horizontalDistance = 5f;
@@ -250,6 +260,7 @@ public class BossBulletController : MonoBehaviour
         }
     }
 
+    // 弾をジグザグに動かす補助コルーチン
     IEnumerator MoveInZigZag(GameObject bullet, float horizontalDistance, float verticalStep, float speed, bool initialDirection)
     {
         Vector3 startPosition = bullet.transform.position;
@@ -275,6 +286,7 @@ public class BossBulletController : MonoBehaviour
         }
     }
 
+    // 波状に広がる弾を発射
     IEnumerator SpreadWaveBullet()
     {
         while (isFiring && isMovable)
@@ -299,6 +311,7 @@ public class BossBulletController : MonoBehaviour
         }
     }
 
+    // 円状に弾を発射（リング状）
     IEnumerator RingBullt()
     {
         int bulletCount = 15;
@@ -324,15 +337,17 @@ public class BossBulletController : MonoBehaviour
         }
     }
 
+    // 一定距離進んだ後に分裂する弾
     IEnumerator SplittingBullet()
     {
         while (isFiring && isMovable)
         {
+            // 既に親弾が存在する間は待機
             while (parentBullet != null)
             {
                 yield return null;
             }
-
+            // 親弾の生成と発射
             parentBullet = Instantiate(bulletPrefab[7], barragePointUnder.position, Quaternion.identity);
             parentBullet.transform.localScale *= 2f;
 
@@ -350,6 +365,7 @@ public class BossBulletController : MonoBehaviour
         }
     }
 
+    // 一定距離移動後に分裂処理を行う
     IEnumerator HandleBulletSplit(GameObject parentBullet)
     {
         float splitDistance = 7f;
@@ -366,6 +382,7 @@ public class BossBulletController : MonoBehaviour
         Destroy(parentBullet);
     }
 
+    // 弾を複数方向へ分裂
     private void SplitIntoBullets(Vector3 position)
     {
         int bulletCount = 10;

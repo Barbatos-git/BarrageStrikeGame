@@ -27,11 +27,12 @@ public class GameDataManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            // シーン切り替え時に破棄されないようにする
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(gameObject);  // 重複があれば破棄
         }
     }
 }

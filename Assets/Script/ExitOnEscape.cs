@@ -16,10 +16,12 @@ public class ExitOnEscape : MonoBehaviour
         EndGame();
     }
 
+    // ゲーム終了処理
     private void EndGame()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            // 実行ファイルを終了
             Application.Quit();
 
 #if UNITY_EDITOR

@@ -13,6 +13,7 @@ public class BGMController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // ボタンにクリックイベントを登録
         bgmButton.onClick.AddListener(ToggleBGM);
 
         UpdateButtonImage();
@@ -24,9 +25,11 @@ public class BGMController : MonoBehaviour
         
     }
 
+    // BGMのON/OFFを切り替える
     void ToggleBGM()
     {
         isBGMOn = !isBGMOn;
+        // BGMを再生または一時停止
         if (isBGMOn)
         {
             audioSource.Play();
@@ -35,10 +38,11 @@ public class BGMController : MonoBehaviour
         {
             audioSource.Pause();
         }
-
+        // ボタン画像を変更
         UpdateButtonImage();
     }
 
+    // 現在のBGM状態に応じてボタン画像を更新
     void UpdateButtonImage()
     {
         if (isBGMOn)

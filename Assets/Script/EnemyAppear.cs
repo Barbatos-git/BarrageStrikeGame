@@ -21,6 +21,7 @@ public class EnemyAppear : MonoBehaviour
     {
         bossAppear = FindObjectOfType<BossAppear>();
         playerInvincibleController = FindObjectOfType<InvincibleAndFlashController>();
+        // 第1波の敵を出現させる
         StartCoroutine(SpawnEnemies(enemyPrefabs[0], initiaEnemyCount));
     }
 
@@ -30,28 +31,30 @@ public class EnemyAppear : MonoBehaviour
         
     }
 
+    // 敵を一定数生成するコルーチン
     IEnumerator SpawnEnemies(GameObject enemyPrefab, int count)
     {
         for (int i = 0; i < count; i++)
         {
+            // 左右ランダムで出現エリアを決定
             bool spawnFromLeft = Random.value > 0.5f;
             Transform spawnArea = spawnFromLeft ? spawnAreaLeft : spawnAreaRight;
-
+            // エリア内ランダム座標を計算
             Vector3 spawnPosition = new Vector3(
                 Random.Range(spawnArea.position.x - spawnArea.localPosition.x / 2, spawnArea.position.x + spawnArea.localPosition.x / 2),
                 spawnArea.position.y,
                 spawnArea.position.z
                 );
-
+            // 敵を生成
             enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-
+            // ターゲット位置の設定と死亡イベント登録
             EnemyController enemyController = enemy.GetComponent<EnemyController>();
             if (enemyController != null)
             {
                 enemyController.SetTargetPosition(enemyPoint);
                 enemyController.onEnemyDeath += OnEnemyDeath;
             }
-
+            // HPや爆発管理、プレイヤーとの衝突対応
             EnemyExplosionAndHpController enemyExplosionAndHp = enemy.GetComponent<EnemyExplosionAndHpController>();
             if (enemyExplosionAndHp != null && playerInvincibleController != null)
             {
@@ -64,17 +67,19 @@ public class EnemyAppear : MonoBehaviour
         }
     }
 
+    // 敵が死んだときに呼ばれるイベント処理
     private void OnEnemyDeath(GameObject enemy)
     {
         if (activeEnemies.Contains(enemy))
         {
             activeEnemies.Remove(enemy);
         }
-
+        // 第1波の全滅時に第2波出現
         if (activeEnemies.Count == 0 && !isSecond)
         {
             StartCoroutine(SpawnSceondWave());
         }
+        // 第2波全滅かつボス出現状態ならボス戦開始
         if (isBossAppear && activeEnemies.Count == 0 && isSecond)
         {
             bossAppear.MoveBoss();
@@ -83,6 +88,7 @@ public class EnemyAppear : MonoBehaviour
         }
     }
 
+    // 第2波の敵を出現させる
     IEnumerator SpawnSceondWave()
     {
         yield return new WaitForSeconds(5f);

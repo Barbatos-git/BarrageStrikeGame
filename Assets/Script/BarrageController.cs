@@ -18,6 +18,7 @@ public class BarrageController : MonoBehaviour
         if (hpBarController != null)
         {
             //hpBarController.onHpZero.RemoveListener(OnBossDeath);
+            // ボスのHPがゼロになった時のイベントに登録
             hpBarController.onHpZero.AddListener(OnBossDeath);
         }
     }
@@ -26,32 +27,38 @@ public class BarrageController : MonoBehaviour
     void Update()
     {
         //transform.Translate(Vector2.down * speed * Time.deltaTime);
+        // 画面外に出たらオブジェクトを削除する
         if (IsOutOfScreen())
         {
             Destroy(gameObject);
         }
     }
 
+    // 弾が画面外にあるかどうかを判定
     private bool IsOutOfScreen()
     {
         Vector3 screenPoint = mainCamera.WorldToViewportPoint(transform.position);
         return screenPoint.x < 0 || screenPoint.x > 1 || screenPoint.y < 0 || screenPoint.y > 1;
     }
 
+    // プレイヤーとの当たり判定処理
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && !hasDied)
         {
+            // プレイヤーにダメージを与える
             PlayerHpController playerHp = collision.gameObject.GetComponent<PlayerHpController>();
             if (playerHp != null)
             {
                 playerHp.TakeDamage(damage);
                 isCollision?.Invoke();
             }
+            // 弾を削除する
             Destroy(gameObject);
         }
     }
 
+    // ボスが死亡した時に呼び出される
     private void OnBossDeath()
     {
         if (hasDied) { return; }

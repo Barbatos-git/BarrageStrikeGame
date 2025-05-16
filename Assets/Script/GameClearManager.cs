@@ -30,8 +30,10 @@ public class GameClearManager : MonoBehaviour
         gameTimes += Time.deltaTime;
         if (isGameClearTriggered)
         {
+            // アルファ値をフェードイン
             gameClearAlpha += Time.deltaTime / fadeDuration;
             gameClearImage.color = new Color(1f, 1f, 1f, Mathf.Clamp01(gameClearAlpha));
+            // 完全に表示されたら遷移予約
             if (gameClearAlpha >= 1f)
             {
                 Invoke("TransitionToNextScene", waitTimeBeforeTransition);
@@ -40,6 +42,7 @@ public class GameClearManager : MonoBehaviour
         }
     }
 
+    // ボスHPバーが表示されたときに呼ばれる
     private void BossHpActive()
     {
         BossHpBarController bossHp = FindObjectOfType<BossHpBarController>();
@@ -49,6 +52,7 @@ public class GameClearManager : MonoBehaviour
         }
     }
 
+    // ボスが倒されたときに呼び出される
     public void TriggerGameClear()
     {
         if (!isGameClearTriggered)
@@ -59,6 +63,7 @@ public class GameClearManager : MonoBehaviour
         }
     }
 
+    // 次のシーンへ遷移し、必要なゲームデータを保存
     void TransitionToNextScene()
     {
         BossHpBarController bossHpBarController = FindObjectOfType<BossHpBarController>();

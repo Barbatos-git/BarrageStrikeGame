@@ -14,6 +14,7 @@ public class PlayerExplosionController : MonoBehaviour
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        // プレイヤー死亡イベントに登録
         PlayerHpController playerHp = FindObjectOfType<PlayerHpController>();
         if (playerHp != null)
         {
@@ -27,15 +28,19 @@ public class PlayerExplosionController : MonoBehaviour
 
     }
 
+    // 死亡時に呼び出される処理
     private void OnPlayerDeath()
     {
+        // 爆発を生成
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        // フェード処理開始
         if (!isFading)
         {
             StartCoroutine(FadeOutAndDestroy());
         }
     }
 
+    // 徐々に透明にして削除するコルーチン
     private IEnumerator FadeOutAndDestroy()
     {
         isFading = true;
@@ -48,6 +53,7 @@ public class PlayerExplosionController : MonoBehaviour
             spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
             yield return null;
         }
+        // 完全に透明にしてから削除
         spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0);
         Destroy(gameObject);
     }

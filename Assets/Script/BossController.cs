@@ -26,17 +26,20 @@ public class BossController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // ボスが生存かつ移動可能なときのみ移動を行う
         if (isAlive && isMovable)
         {
             MoveToTarget();
         }
     }
 
+    // ランダムな座標を移動先として設定
     void SetRandomTargetPosition() 
     {
         Camera mainCamera = Camera.main;
         float cameraHeight = 2f * mainCamera.orthographicSize;
         float cameraWideth = cameraHeight * mainCamera.aspect;
+        // カメラの中で移動できる範囲を計算（画面内に収める）
         minX = mainCamera.transform.position.x - cameraWideth / 2 + bossCircleCollider.radius;
         maxX = mainCamera.transform.position.x + cameraWideth / 2 - bossCircleCollider.radius;
         minY = mainCamera.transform.position.y + cameraHeight / 6 + bossCircleCollider.radius - 1.5f;
@@ -48,15 +51,19 @@ public class BossController : MonoBehaviour
         targetPosition = new Vector3(targetX, targetY, transform.position.z);
     }
 
+    // ターゲットへ向かって移動する処理
     private void MoveToTarget()
     {
+        // 目的地に到達したら次のランダム座標を設定
         if (Vector3.Distance(transform.position + (Vector3)offset, targetPosition) < 0.1f)
         {
             SetRandomTargetPosition();
         }
+        // オフセットを考慮して位置を補正しながら移動
         transform.position = Vector3.MoveTowards(transform.position + (Vector3)offset, targetPosition, moveSpeed * Time.deltaTime) - (Vector3)offset;
     }
 
+    // ボスを停止（死亡時など）
     public void StopMovement()
     {
         isAlive = false;

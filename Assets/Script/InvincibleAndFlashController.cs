@@ -20,6 +20,7 @@ public class InvincibleAndFlashController : MonoBehaviour
         bossExplosionController = FindObjectOfType<BossExplosionController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
+        // ボスとの衝突イベントを登録
         if (bossExplosionController != null)
         {
             bossExplosionController.isCollision.AddListener(CollisionWithBoss);
@@ -32,6 +33,7 @@ public class InvincibleAndFlashController : MonoBehaviour
         
     }
 
+    // 外部からダメージ処理を呼び出す際の入口
     public void TakeDamage()
     {
         if (isInvincible)
@@ -41,22 +43,26 @@ public class InvincibleAndFlashController : MonoBehaviour
         StartCoroutine(InvincibleAndFlash());
     }
 
+    // 無敵状態と点滅を同時に管理するコルーチン
     private IEnumerator InvincibleAndFlash()
     {
         isInvincible = true;
-        StartCoroutine(FlashWhite());
+        StartCoroutine(FlashWhite());  // 点滅
         yield return new WaitForSeconds(invincibleTime);
         isInvincible = false;
-        resetInvincible?.Invoke();
+        resetInvincible?.Invoke();  // UI側に通知
     }
 
+    // 赤く点滅させる処理
     private IEnumerator FlashWhite()
     {
         float elapsedTime = 0f;
         while (elapsedTime < whiteFlashTime)
         {
+            // 赤色に変更
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(flashTime);
+            // 元の色に戻す
             spriteRenderer.color = originalColor;
             yield return new WaitForSeconds(flashTime);
             elapsedTime += flashTime;
@@ -65,18 +71,21 @@ public class InvincibleAndFlashController : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
+    // ボスとの衝突時の処理
     private void CollisionWithBoss()
     {
         TakeDamage();
         onPlayerInvincible?.Invoke();
     }
 
+    // 弾（Barrage）との衝突時の処理
     public void CollisionWithBarrage()
     {
         TakeDamage();
         onPlayerInvincible?.Invoke();
     }
 
+    // 敵との衝突時の処理
     public void CollisionWithEnemy()
     {
         TakeDamage();

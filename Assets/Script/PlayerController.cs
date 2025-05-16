@@ -31,11 +31,12 @@ public class PlayerController : MonoBehaviour
         Camera mainCamera = Camera.main;
         float cameraHeight = 2f * mainCamera.orthographicSize;
         float cameraWideth = cameraHeight * mainCamera.aspect;
+        // カメラサイズに応じて移動制限範囲を設定
         minX = mainCamera.transform.position.x - cameraWideth / 2 + cpc.size.x * 5f;
         maxX = mainCamera.transform.position.x + cameraWideth / 2 - cpc.size.x * 5f;
         minY = mainCamera.transform.position.y - cameraHeight / 2 + cpc.size.y * 5f + ctrlgd.size.y * 3.5f;
         maxY = mainCamera.transform.position.y + cameraHeight / 2 - cpc.size.y * 5f;
-
+        // 死亡イベントを登録
         PlayerHpController playerHp = FindObjectOfType<PlayerHpController>();
         if (playerHp != null)
         {
@@ -58,11 +59,13 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        // キーボードとジョイスティックの両方に対応
         Vector2 keyboardInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         Vector2 joystickInput = joystick.InputDirection;
         movement = joystickInput.magnitude > 0 ? joystickInput : keyboardInput;
         //movement.x = Input.GetAxis("Horizontal");
         //movement.y = Input.GetAxis("Vertical");
+        // 移動中＆発射間隔経過 → 弾発射
         if (movement != Vector2.zero && Time.time >= nextShotTime)
         {
             Shoot();
@@ -70,6 +73,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 弾を発射する処理
     void Shoot()
     {
         GameObject shot = Instantiate(shotPrefab, shotPoint.position, shotPoint.rotation);
@@ -81,6 +85,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    // 物理挙動の移動処理
     void FixedUpdate()
     {
         if (!isAlive)
@@ -89,6 +94,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         Vector2 targetPosition = rb.position + movement * moveSpeed * Time.fixedDeltaTime;
+        // 画面内に収める
         targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
         targetPosition.y = Mathf.Clamp(targetPosition.y, minY, maxY);
         rb.MovePosition(targetPosition);
@@ -96,6 +102,7 @@ public class PlayerController : MonoBehaviour
         //rb.velocity = direction * moveSpeed;
     }
 
+    // 死亡時の動作
     private void OnPlayerDeath()
     {
         isAlive = false;

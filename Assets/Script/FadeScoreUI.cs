@@ -10,6 +10,7 @@ public class FadeScoreUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // 初期状態は完全に透明
         canvasGroup.alpha = 0;
         StartCoroutine(FadeIn());
     }
@@ -17,12 +18,14 @@ public class FadeScoreUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // マウス左クリック or スペースキーでシーン遷移
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
             TransitionToNextScene();
         }
     }
 
+    // フェードイン処理（透明→表示）
     IEnumerator FadeIn()
     {
         while (canvasGroup.alpha < 1)
@@ -32,6 +35,7 @@ public class FadeScoreUI : MonoBehaviour
         }
     }
 
+    // シーンを指定の名前で切り替える
     void TransitionToNextScene()
     {
         SceneManager.LoadScene(nextSceneName);

@@ -22,6 +22,7 @@ public class MenuController : MonoBehaviour
         
     }
 
+    // メニューを開く
     public void OpenMenu()
     {
         if (isMenuOpen)
@@ -29,11 +30,12 @@ public class MenuController : MonoBehaviour
             return;
         }
         isMenuOpen = true;
-        settingsMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        audioSource.Pause();
+        settingsMenuUI.SetActive(true);  // UIを表示
+        Time.timeScale = 0f;             // ゲームを一時停止
+        audioSource.Pause();             // 音も停止
     }
 
+    // メニューを閉じてゲーム再開
     public void ResumeGame()
     {
         if (!isMenuOpen)
@@ -41,11 +43,12 @@ public class MenuController : MonoBehaviour
             return;
         }
         isMenuOpen = false;
-        settingsMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        audioSource.Play();
+        settingsMenuUI.SetActive(false);  // UIを非表示
+        Time.timeScale = 1f;              // ゲームを一時停止
+        audioSource.Play();               // 音も停止
     }
 
+    // メニューからシーンを戻す（例：タイトルへ）
     public void LoadPreviousScene()
     {
         Time.timeScale = 1f;

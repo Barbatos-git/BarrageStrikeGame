@@ -27,17 +27,18 @@ public class WindowPositioner : MonoBehaviour
         
     }
 
+    // ウィンドウを画面中央に移動させる処理
     void CenterWindow(int width, int height)
     {
         IntPtr hWnd = GetActiveWindow();
         if (hWnd == IntPtr.Zero) return;
-
+        // 現在の画面解像度を取得
         int screenWidth = Screen.currentResolution.width;
         int screenHeight = Screen.currentResolution.height;
-
+        // 画面中央の座標を計算
         int x = (screenWidth - width) / 2;
         int y = (screenHeight - height) / 2;
-
+        // ウィンドウを中央に移動
         SetWindowPos(hWnd, IntPtr.Zero, x, y, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
     }
 }

@@ -19,12 +19,15 @@ public class CircleBullet : MonoBehaviour
         
     }
 
+    // 弾を一斉に円状に発射する関数
     public void Fire()
     {
         for (int i = 0; i < bulletCount; i++)
         {
+            // 弾の角度を等間隔で計算
             float angle = i * (360f / bulletCount);
             GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            // 方向ベクトルを角度から算出
             Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
             bullet.GetComponent<Rigidbody>().linearVelocity = direction * speed;
         }
