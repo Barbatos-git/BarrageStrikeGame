@@ -23,7 +23,6 @@ Unity 2D 弾幕シューティングゲーム
   - Scenes：HomeScene（タイトル画面）、GameScene（ゲーム本編）、ScoreScene（リザルト画面）
   - Scripts：プレイヤー制御、弾幕管理、スコア計算、BGM制御、UI制御など
   - Prefabs：プレイヤー、ボス、弾、エフェクトなどのプレハブ
-  - UI：ボタン、テキスト、背景、アイコンなど
   - Audio：8種のBGMファイルと音声制御スクリプト
   - Animations：スコアアニメーション、ボス登場演出など
 
